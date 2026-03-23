@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Loading Screen</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  color: white;
+  background: url("https://i.ibb.co.com/PvPpgmSP/we-believe-in-music.png") no-repeat center center/cover;
+}
+
+/* overlay biar cinematic */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 0;
+}
+
+/* container */
+.loading-screen {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* logo container */
+.logo-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+/* glow */
+.logo-container::after {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  filter: blur(20px);
+  z-index: 0;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+/* logo */
+.logo {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo img {
+  width: 110%;
+  height: 110%;
+  object-fit: contain;
+}
+
+/* teks melingkar */
+.circle-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 240px;
+  height: 240px;
+  transform: translate(-50%, -50%) rotate(0deg);
+  transform-origin: 50% 50%;
+  animation: spinText 10s linear infinite;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* animasi */
+@keyframes spinText {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* loading bar */
+.loading-bar {
+  margin-top: 40px;
+  width: 250px;
+  height: 6px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  width: 0%;
+  background: white;
+}
+
+/* persen */
+.loading-text {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* tombol start */
+.start-btn {
+  display: none;
+  margin-top: 40px;
+  padding: 12px 30px;
+  border: none;
+  background: white;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.start-btn:hover {
+  transform: scale(1.1);
+}
+</style>
+</head>
+
+<body>
+
+<div class="loading-screen">
+
+  <div class="logo-container">
+    <!-- lingkaran teks -->
+    <svg class="circle-text" viewBox="0 0 300 300">
+      <defs>
+        <path id="circlePath" d="M150,150 m-140,0 a140,140 0 1,1 280,0 a140,140 0 1,1 -280,0" />
+      </defs>
+      <text fill="white" font-size="14" font-family="Arial" letter-spacing="1.5">
+        <textPath href="#circlePath" startOffset="0%">
+          WE BELIEVE IN MUSIC • WE BELIEVE IN MUSIC • WE BELIEVE IN MUSIC • WE BELIEVE IN MUSIC • WE BELIEVE IN MUSIC •
+        </textPath>
+      </text>
+    </svg>
+
+    <!-- logo di tengah -->
+    <div class="logo">
+      <img src="https://i.ibb.co.com/MyRY13JQ/Hitam-dan-Putih-Y2-K-Retro-Estetik-Streetwear-Logo.png" alt="logo">
+    </div>
+  </div>
+
+  <div class="loading-bar" id="loadingBar">
+    <div class="progress" id="progress"></div>
+  </div>
+
+  <div class="loading-text" id="percent">0%</div>
+
+  <button class="start-btn" id="startBtn">START</button>
+
+</div>
+
+<script>
+// loading
+let percent = 0;
+const progress = document.getElementById("progress");
+const percentText = document.getElementById("percent");
+const startBtn = document.getElementById("startBtn");
+const loadingBar = document.getElementById("loadingBar");
+
+let interval = setInterval(() => {
+  percent++;
+  progress.style.width = percent + "%";
+  percentText.innerText = percent + "%";
+
+  if (percent >= 100) {
+    clearInterval(interval);
+
+    loadingBar.style.display = "none";
+    percentText.style.display = "none";
+
+    startBtn.style.display = "block";
+  }
+}, 40);
+
+// klik start → ganti halaman
+startBtn.addEventListener("click", () => {
+  document.body.style.transition = "1s";
+  document.body.style.opacity = "0";
+
+  setTimeout(() => {
+    window.location.href = "music.html";
+  }, 1000);
+});
+</script>
+
+</body>
+</html>
