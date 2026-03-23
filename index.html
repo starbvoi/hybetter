@@ -1,213 +1,803 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Loading Screen</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HYBETTER</title>
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
-  color: white;
-  background: url("https://raw.githubusercontent.com/starbvoi/hybetter/597409fa538dd8aa1707a703c7df82b0eee52512/background.png") no-repeat center center/cover;
-}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* overlay biar cinematic */
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
-  z-index: 0;
-}
+    body {
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+      color: white;
+      min-height: 100vh;
+      background: url("https://raw.githubusercontent.com/starbvoi/hybetter/597409fa538dd8aa1707a703c7df82b0eee52512/background.png") no-repeat center center / cover;
+    }
 
-/* container */
-.loading-screen {
-  position: relative;
-  z-index: 1;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 0;
+      pointer-events: none;
+    }
 
-/* logo container */
-.logo-container {
-  position: relative;
-  width: 200px;
-  height: 200px;
-}
+    /* =========================
+       LOADING SCREEN
+    ========================= */
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      transition: opacity 0.8s ease;
+    }
 
-/* glow */
-.logo-container::after {
-  content: "";
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.1);
-  filter: blur(20px);
-  z-index: 0;
-  animation: pulse 2s infinite ease-in-out;
-}
+    .logo-container {
+      position: relative;
+      width: 200px;
+      height: 200px;
+    }
 
-/* logo */
-.logo {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  overflow: hidden;
-  background: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    .logo-container::after {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      filter: blur(20px);
+      z-index: 0;
+      pointer-events: none;
+    }
 
-.logo img {
-  width: 110%;
-  height: 110%;
-  object-fit: contain;
-}
+    .logo {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: none;
+    }
 
-/* teks melingkar */
-.circle-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 240px;
-  height: 240px;
-  transform: translate(-50%, -50%) rotate(0deg);
-  transform-origin: 50% 50%;
-  animation: spinText 10s linear infinite;
-  z-index: 3;
-  pointer-events: none;
-}
+    .logo img {
+      width: 110%;
+      height: 110%;
+      object-fit: contain;
+      pointer-events: none;
+    }
 
-/* animasi */
-@keyframes spinText {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
+    .circle-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 240px;
+      height: 240px;
+      transform: translate(-50%, -50%) rotate(0deg);
+      transform-origin: 50% 50%;
+      animation: spinText 10s linear infinite;
+      z-index: 3;
+      pointer-events: none;
+    }
 
-/* loading bar */
-.loading-bar {
-  margin-top: 40px;
-  width: 250px;
-  height: 6px;
-  background: rgba(255,255,255,0.2);
-  border-radius: 10px;
-  overflow: hidden;
-}
+    @keyframes spinText {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
 
-.progress {
-  height: 100%;
-  width: 0%;
-  background: white;
-}
+    .loading-bar {
+      margin-top: 40px;
+      width: 250px;
+      height: 6px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      overflow: hidden;
+    }
 
-/* persen */
-.loading-text {
-  margin-top: 10px;
-  font-size: 14px;
-}
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: white;
+    }
 
-/* tombol start */
-.start-btn {
-  display: none;
-  margin-top: 40px;
-  padding: 12px 30px;
-  border: none;
-  background: white;
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 20px;
-  transition: 0.3s;
-}
+    .loading-text {
+      margin-top: 10px;
+      font-size: 14px;
+    }
 
-.start-btn:hover {
-  transform: scale(1.1);
-}
-</style>
+    .start-btn {
+      display: none;
+      margin-top: 40px;
+      padding: 12px 30px;
+      border: none;
+      background: white;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 20px;
+      transition: 0.3s;
+      position: relative;
+      z-index: 10000;
+    }
+
+    .start-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* =========================
+       MAIN PAGE
+    ========================= */
+    #mainPage {
+      display: none;
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+    }
+
+    .page {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 70px 20px;
+    }
+
+    .frame {
+      width: 100%;
+      max-width: 760px;
+      position: relative;
+    }
+
+    .top-line {
+      width: 100%;
+      height: 2px;
+      background: white;
+      margin-bottom: 18px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-size: 18px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .lang-switch {
+      user-select: none;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .lang-switch span {
+      cursor: pointer;
+      opacity: 0.6;
+      transition: 0.2s ease;
+    }
+
+    .lang-switch span.active {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    .music-btn {
+      width: 40px;
+      height: 40px;
+      border: 2px solid white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+      transition: 0.2s ease;
+      user-select: none;
+      background: transparent;
+      color: white;
+    }
+
+    .music-btn:hover {
+      transform: scale(1.08);
+    }
+
+    .music-btn.rotating {
+      animation: spinIcon 3s linear infinite;
+    }
+
+    @keyframes spinIcon {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .thin-line {
+      width: 100%;
+      height: 2px;
+      background: white;
+      margin-bottom: 18px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .menu-btn {
+      border: none;
+      background: white;
+      color: black;
+      padding: 12px 18px;
+      font-weight: 900;
+      font-size: 15px;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.2);
+      transition: 0.2s ease;
+    }
+
+    .menu-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .menu-btn.active {
+      position: relative;
+    }
+
+    .menu-btn.active::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -10px;
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 10px solid white;
+    }
+
+    .hero-image {
+      width: 100%;
+      height: 240px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%);
+      display: block;
+    }
+
+    .content-text {
+      font-size: 18px;
+      line-height: 1.9;
+      letter-spacing: 2px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 34px;
+      max-width: 100%;
+    }
+
+    .music-popup {
+      position: absolute;
+      top: 52px;
+      right: 0;
+      width: 305px;
+      background: #2f3136;
+      border-radius: 20px;
+      padding: 14px 16px 16px;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.35);
+      display: none;
+      z-index: 50;
+    }
+
+    .music-popup.show {
+      display: block;
+    }
+
+    .popup-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      gap: 12px;
+    }
+
+    .song-info {
+      min-width: 0;
+    }
+
+    .song-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+
+    .song-artist {
+      font-size: 13px;
+      color: #9c9c9c;
+      text-transform: uppercase;
+    }
+
+    .close-popup {
+      background: transparent;
+      border: none;
+      color: #a1a1a1;
+      font-size: 18px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .time-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .time-label {
+      font-size: 12px;
+      font-weight: 700;
+      width: 34px;
+      text-align: center;
+    }
+
+    .progress-wrap {
+      flex: 1;
+      height: 6px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 999px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: white;
+      border-radius: 999px;
+    }
+
+    .player-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .player-controls button {
+      background: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .play-btn {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .topbar {
+        font-size: 14px;
+        gap: 10px;
+      }
+
+      .topbar-right {
+        gap: 10px;
+      }
+
+      .music-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 15px;
+      }
+
+      .button-row {
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+
+      .menu-btn {
+        font-size: 13px;
+        padding: 10px 14px;
+      }
+
+      .hero-image {
+        height: 180px;
+      }
+
+      .content-text {
+        font-size: 14px;
+        line-height: 1.8;
+        letter-spacing: 1.5px;
+      }
+
+      .music-popup {
+        width: min(305px, calc(100vw - 40px));
+        right: 0;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="loading-screen">
+  <div class="loading-screen" id="loadingScreen">
+    <div class="logo-container">
+      <svg class="circle-text" viewBox="0 0 300 300">
+        <defs>
+          <path id="circlePath" d="M150,150 m-140,0 a140,140 0 1,1 280,0 a140,140 0 1,1 -280,0" />
+        </defs>
+        <text fill="white" font-size="14" font-family="Arial" letter-spacing="1.5">
+          <textPath href="#circlePath" startOffset="0%">
+            WE BELIEVE IN MUSIC • WE BELIEVE IN MUSIC • WE BELIEVE IN MUSIC • WE BELIEVE IN MUSIC • WE BELIEVE IN MUSIC •
+          </textPath>
+        </text>
+      </svg>
 
-  <div class="logo-container">
-    <!-- lingkaran teks -->
-    <svg class="circle-text" viewBox="0 0 300 300">
-      <defs>
-        <path id="circlePath" d="M150,150 m-140,0 a140,140 0 1,1 280,0 a140,140 0 1,1 -280,0" />
-      </defs>
-      <text fill="white" font-size="14" font-family="Arial" letter-spacing="1.5">
-        <textPath href="#circlePath" startOffset="0%">
-          WE BELIEVE IN MUSIC • WE BELIEVE IN MUSIC • WE BELIEVE IN MUSIC • WE BELIEVE IN MUSIC • WE BELIEVE IN MUSIC •
-        </textPath>
-      </text>
-    </svg>
+      <div class="logo">
+        <img src="https://raw.githubusercontent.com/starbvoi/hybetter/597409fa538dd8aa1707a703c7df82b0eee52512/Logo.png" alt="logo">
+      </div>
+    </div>
 
-    <!-- logo di tengah -->
-    <div class="logo">
-      <img src="https://raw.githubusercontent.com/starbvoi/hybetter/597409fa538dd8aa1707a703c7df82b0eee52512/Logo.png" alt="logo">
+    <div class="loading-bar" id="loadingBar">
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="loading-text" id="percent">0%</div>
+
+    <button class="start-btn" id="startBtn" type="button">START</button>
+  </div>
+
+  <div id="mainPage">
+    <div class="page">
+      <div class="frame">
+
+        <div class="top-line"></div>
+
+        <div class="topbar">
+          <div id="siteTitle">HYBETTER EST 2026</div>
+          <div class="topbar-right">
+            <div class="lang-switch">
+              <span id="lang-ina" class="active">INA</span> |
+              <span id="lang-eng">ENG</span>
+            </div>
+
+            <button class="music-btn" id="musicToggle" type="button">♫</button>
+          </div>
+        </div>
+
+        <div class="music-popup" id="musicPopup">
+          <div class="popup-top">
+            <div class="song-info">
+              <div class="song-title" id="songTitle">Dynamite</div>
+              <div class="song-artist" id="songArtist">BTS</div>
+            </div>
+            <button class="close-popup" id="closePopup" type="button">×</button>
+          </div>
+
+          <div class="time-row">
+            <div class="time-label" id="currentTime">0:00</div>
+            <div class="progress-wrap" id="progressWrap">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="time-label" id="duration">0:00</div>
+          </div>
+
+          <div class="player-controls">
+            <button type="button" id="prevBtn">⏮</button>
+            <button type="button" class="play-btn" id="playPauseBtn">▶</button>
+            <button type="button" id="nextBtn">⏭</button>
+          </div>
+        </div>
+
+        <div class="thin-line"></div>
+
+        <div class="button-row">
+          <button class="menu-btn active" id="btnProfile" type="button">PROFILE</button>
+          <button class="menu-btn" id="btnRules" type="button">RULES</button>
+          <button class="menu-btn" id="btnMembers" type="button">MEMBER'S</button>
+          <button class="menu-btn" id="btnJoin" type="button">HOW TO JOIN</button>
+          <button class="menu-btn" id="btnMedia" type="button">MEDIAPARTNER</button>
+        </div>
+
+        <div class="hero-image">
+          <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80" alt="Building">
+        </div>
+
+        <div class="content-text" id="mainText">
+          HYBETTER adalah komunitas musik yang dibangun untuk para kreator, penikmat,
+          dan kolaborator yang ingin berkembang bersama. Kami percaya bahwa musik
+          bukan hanya suara, tetapi juga identitas, energi, dan gerakan budaya yang
+          bisa menyatukan banyak orang dalam satu visi.
+        </div>
+
+      </div>
     </div>
   </div>
 
-  <div class="loading-bar" id="loadingBar">
-    <div class="progress" id="progress"></div>
-  </div>
+  <audio id="audioPlayer" preload="auto"></audio>
 
-  <div class="loading-text" id="percent">0%</div>
+  <script>
+    let percent = 0;
+    const progress = document.getElementById("progress");
+    const percentText = document.getElementById("percent");
+    const startBtn = document.getElementById("startBtn");
+    const loadingBar = document.getElementById("loadingBar");
+    const loadingScreen = document.getElementById("loadingScreen");
+    const mainPage = document.getElementById("mainPage");
 
-  <button class="start-btn" id="startBtn">START</button>
+    const langIna = document.getElementById("lang-ina");
+    const langEng = document.getElementById("lang-eng");
 
-</div>
+    const musicToggle = document.getElementById("musicToggle");
+    const musicPopup = document.getElementById("musicPopup");
+    const closePopup = document.getElementById("closePopup");
+    const audioPlayer = document.getElementById("audioPlayer");
+    const playPauseBtn = document.getElementById("playPauseBtn");
+    const progressWrap = document.getElementById("progressWrap");
+    const progressFill = document.getElementById("progressFill");
+    const currentTimeEl = document.getElementById("currentTime");
+    const durationEl = document.getElementById("duration");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const songTitle = document.getElementById("songTitle");
+    const songArtist = document.getElementById("songArtist");
 
-<script>
-// loading
-let percent = 0;
-const progress = document.getElementById("progress");
-const percentText = document.getElementById("percent");
-const startBtn = document.getElementById("startBtn");
-const loadingBar = document.getElementById("loadingBar");
+    const textData = {
+      INA: {
+        title: "HYBETTER EST 2026",
+        text: "HYBETTER adalah komunitas musik yang dibangun untuk para kreator, penikmat, dan kolaborator yang ingin berkembang bersama. Kami percaya bahwa musik bukan hanya suara, tetapi juga identitas, energi, dan gerakan budaya yang bisa menyatukan banyak orang dalam satu visi.",
+        profile: "PROFILE",
+        rules: "RULES",
+        members: "MEMBER'S",
+        join: "HOW TO JOIN",
+        media: "MEDIAPARTNER"
+      },
+      ENG: {
+        title: "HYBETTER EST 2026",
+        text: "HYBETTER is a music community built for creators, listeners, and collaborators who want to grow together. We believe that music is not only sound, but also identity, energy, and a cultural movement that can unite many people under one vision.",
+        profile: "PROFILE",
+        rules: "RULES",
+        members: "MEMBER'S",
+        join: "HOW TO JOIN",
+        media: "MEDIAPARTNER"
+      }
+    };
 
-let interval = setInterval(() => {
-  percent++;
-  progress.style.width = percent + "%";
-  percentText.innerText = percent + "%";
+    const songs = [
+      {
+        title: "Dynamite",
+        artist: "BTS",
+        src: "https://raw.githubusercontent.com/starbvoi/hybetter/c14960e85360a67270d0a9390826cc2a8d27a94b/Dynamite%20-%20BTS.mp3"
+      },
+      {
+        title: "NOT CUTE ANYMORE",
+        artist: "ILLIT",
+        src: "https://raw.githubusercontent.com/starbvoi/hybetter/c14960e85360a67270d0a9390826cc2a8d27a94b/NOT%20CUTE%20ANYMORE.mp3"
+      },
+      {
+        title: "SPAGHETTI",
+        artist: "LE SSERAFIM ft J-hope",
+        src: "https://raw.githubusercontent.com/starbvoi/hybetter/c14960e85360a67270d0a9390826cc2a8d27a94b/LE%20SSERAFIM%20-%20SPAGHETTI%20(feat.%20j-hope%20of%20BTS)%20(Explicit).mp3"
+      }
+    ];
 
-  if (percent >= 100) {
-    clearInterval(interval);
+    let currentSong = 0;
 
-    loadingBar.style.display = "none";
-    percentText.style.display = "none";
+    function formatTime(time) {
+      if (isNaN(time)) return "0:00";
+      const minutes = Math.floor(time / 60);
+      const seconds = Math.floor(time % 60);
+      return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    }
 
-    startBtn.style.display = "block";
-  }
-}, 40);
+    function setLanguage(lang) {
+      const data = textData[lang];
+      document.getElementById("siteTitle").textContent = data.title;
+      document.getElementById("mainText").textContent = data.text;
+      document.getElementById("btnProfile").textContent = data.profile;
+      document.getElementById("btnRules").textContent = data.rules;
+      document.getElementById("btnMembers").textContent = data.members;
+      document.getElementById("btnJoin").textContent = data.join;
+      document.getElementById("btnMedia").textContent = data.media;
 
-// klik start → ganti halaman
-startBtn.addEventListener("click", () => {
-  document.body.style.transition = "1s";
-  document.body.style.opacity = "0";
+      langIna.classList.remove("active");
+      langEng.classList.remove("active");
 
-  setTimeout(() => {
-    window.location.href = "hybetter.html";
-  }, 1000);
-});
-</script>
+      if (lang === "INA") {
+        langIna.classList.add("active");
+      } else {
+        langEng.classList.add("active");
+      }
+    }
 
+    function loadSong(index) {
+      const song = songs[index];
+      songTitle.textContent = song.title;
+      songArtist.textContent = song.artist;
+      audioPlayer.src = song.src;
+      progressFill.style.width = "0%";
+      currentTimeEl.textContent = "0:00";
+      durationEl.textContent = "0:00";
+    }
+
+    function updatePlayUI() {
+      if (audioPlayer.paused) {
+        playPauseBtn.textContent = "▶";
+        musicToggle.classList.remove("rotating");
+      } else {
+        playPauseBtn.textContent = "❚❚";
+        musicToggle.classList.add("rotating");
+      }
+    }
+
+    function playSong() {
+      return audioPlayer.play();
+    }
+
+    function pauseSong() {
+      audioPlayer.pause();
+    }
+
+    function togglePlay() {
+      if (audioPlayer.paused) {
+        playSong().catch(() => {});
+      } else {
+        pauseSong();
+      }
+    }
+
+    function nextSong() {
+      currentSong = (currentSong + 1) % songs.length;
+      loadSong(currentSong);
+      playSong().catch(() => {});
+    }
+
+    function prevSong() {
+      currentSong = (currentSong - 1 + songs.length) % songs.length;
+      loadSong(currentSong);
+      playSong().catch(() => {});
+    }
+
+    let interval = setInterval(() => {
+      percent++;
+      progress.style.width = percent + "%";
+      percentText.innerText = percent + "%";
+
+      if (percent >= 100) {
+        clearInterval(interval);
+        loadingBar.style.display = "none";
+        percentText.style.display = "none";
+        startBtn.style.display = "block";
+      }
+    }, 40);
+
+    langIna.addEventListener("click", () => setLanguage("INA"));
+    langEng.addEventListener("click", () => setLanguage("ENG"));
+
+    musicToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      musicPopup.classList.toggle("show");
+    });
+
+    closePopup.addEventListener("click", (e) => {
+      e.stopPropagation();
+      musicPopup.classList.remove("show");
+    });
+
+    playPauseBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      togglePlay();
+    });
+
+    nextBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      nextSong();
+    });
+
+    prevBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      prevSong();
+    });
+
+    audioPlayer.addEventListener("loadedmetadata", () => {
+      durationEl.textContent = formatTime(audioPlayer.duration);
+    });
+
+    audioPlayer.addEventListener("timeupdate", () => {
+      const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100 || 0;
+      progressFill.style.width = progressPercent + "%";
+      currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+      durationEl.textContent = formatTime(audioPlayer.duration);
+    });
+
+    audioPlayer.addEventListener("play", updatePlayUI);
+    audioPlayer.addEventListener("pause", updatePlayUI);
+
+    audioPlayer.addEventListener("ended", () => {
+      nextSong();
+    });
+
+    progressWrap.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const rect = progressWrap.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const width = rect.width;
+      const duration = audioPlayer.duration;
+
+      if (!isNaN(duration) && width > 0) {
+        audioPlayer.currentTime = (clickX / width) * duration;
+      }
+    });
+
+    document.addEventListener("click", (e) => {
+      const clickedInsidePopup = musicPopup.contains(e.target);
+      const clickedMusicButton = musicToggle.contains(e.target);
+
+      if (!clickedInsidePopup && !clickedMusicButton) {
+        musicPopup.classList.remove("show");
+      }
+    });
+
+    startBtn.addEventListener("click", () => {
+      loadingScreen.style.opacity = "0";
+
+      setTimeout(() => {
+        loadingScreen.style.display = "none";
+        mainPage.style.display = "block";
+        loadSong(currentSong);
+        playSong().catch(() => {
+          updatePlayUI();
+        });
+      }, 800);
+    });
+
+    loadSong(currentSong);
+    updatePlayUI();
+    setLanguage("INA");
+  </script>
 </body>
 </html>
